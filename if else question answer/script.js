@@ -74,7 +74,7 @@
 // var price = 1000
 // if (balance >= price) {
 //     alert(`
-//         Purchased Successful 
+//         Purchased Successful
 //         Balanced: ${balance}
 //         Mouse price: ${price}
 //         calculate:  ${balance} - ${price}
@@ -96,7 +96,7 @@
 
 // ____________________________________________________________________________________________________
 
-//Q9: Check if a number is divisible by 5. 
+//Q9: Check if a number is divisible by 5.
 
 // var number = Number(prompt('enter your number'));
 // if (number% 5 ===0) {
