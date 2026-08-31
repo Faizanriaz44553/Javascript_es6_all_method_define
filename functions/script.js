@@ -1,4 +1,4 @@
-var limit = 5;
+var limit = 10;
 var remdom = Math.floor(Math.random() * 100);
 var guess = document.querySelector("#input");
 let para = document.querySelector("#para");
