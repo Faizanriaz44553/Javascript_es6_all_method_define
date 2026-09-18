@@ -1,0 +1,247 @@
+/* ==========================================================================
+   1. CSS ROOT VARIABLES
+   ========================================================================== */
+:root {
+  --primary-color: #ff7e79;
+  --primary-hover: #fa6c67;
+  --primary-active: #e85d58;
+  --link-color: #0084ff;
+  --link-hover: #006bd1;
+
+  --text-main: #202020;
+  --text-muted: #8e8e8e;
+  --text-light: #555555;
+  --icon-color: #1a1a1a;
+  
+  --border-input: #848484;
+  --border-focus: #202020;
+  --bg-page: #ffffff;
+  --bg-card: #ffffff;
+
+  --font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  --radius-input: 8px;
+  --radius-btn: 6px;
+  --input-height: 48px;
+  --transition: 0.2s ease-in-out;
+}
+
+/* ==========================================================================
+   2. GLOBAL RESET & BASE
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-page);
+  color: var(--text-main);
+  line-height: 1.5;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.page-container {
+  width: 100%;
+  max-width: 1050px;
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   3. SIGN IN CARD LAYOUT (Form Left, Image Right)
+   ========================================================================== */
+.signin-card {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  align-items: center;
+  column-gap: 60px;
+  background-color: var(--bg-card);
+  padding: 20px 40px;
+}
+
+.form-wrapper {
+  width: 100%;
+  max-width: 440px;
+}
+
+.form-title {
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 24px;
+  letter-spacing: -0.4px;
+}
+
+.signin-form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==========================================================================
+   4. FORM INPUTS & ICONS
+   ========================================================================== */
+.input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  border: 1.5px solid var(--border-input);
+  border-radius: var(--radius-input);
+  background-color: #ffffff;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.input-group:focus-within {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.04);
+}
+
+.input-icon {
+  position: absolute;
+  left: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--icon-color);
+  pointer-events: none;
+}
+
+.form-control {
+  width: 100%;
+  height: var(--input-height);
+  padding: 0 16px 0 48px;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--font-family);
+  font-size: 0.94rem;
+  color: var(--text-main);
+}
+
+.form-control::placeholder {
+  color: var(--text-muted);
+  font-weight: 400;
+  opacity: 1;
+}
+
+/* ==========================================================================
+   5. CHECKBOX & BUTTON
+   ========================================================================== */
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+  margin-bottom: 20px;
+}
+
+.checkbox-group input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  border: 1.5px solid var(--border-input);
+  accent-color: var(--primary-color);
+  cursor: pointer;
+}
+
+.checkbox-group label {
+  font-size: 0.88rem;
+  color: var(--text-light);
+  cursor: pointer;
+  user-select: none;
+}
+
+.btn-register {
+  width: fit-content;
+  min-width: 110px;
+  height: 42px;
+  padding: 0 28px;
+  background-color: var(--primary-color);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-btn);
+  font-family: var(--font-family);
+  font-size: 0.92rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color var(--transition), transform 0.1s ease;
+  margin-bottom: 24px;
+}
+
+.btn-register:hover {
+  background-color: var(--primary-hover);
+}
+
+.btn-register:active {
+  background-color: var(--primary-active);
+  transform: scale(0.98);
+}
+
+/* ==========================================================================
+   6. FOOTER TEXT & ILLUSTRATION
+   ========================================================================== */
+.signup-redirect-text {
+  font-size: 0.88rem;
+  color: var(--text-main);
+}
+
+.signin-link {
+  color: var(--link-color);
+  text-decoration: none;
+  font-weight: 500;
+  margin-left: 3px;
+  transition: color var(--transition);
+}
+
+.signin-link:hover {
+  color: var(--link-hover);
+  text-decoration: underline;
+}
+
+.illustration-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.illustration-img {
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* ==========================================================================
+   7. RESPONSIVE BREAKPOINT
+   ========================================================================== */
+@media (max-width: 860px) {
+  .signin-card {
+    grid-template-columns: 1fr;
+    row-gap: 32px;
+    padding: 10px;
+  }
+
+  .form-wrapper {
+    order: 2;
+    max-width: 100%;
+  }
+
+  .illustration-wrapper {
+    order: 1;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .form-title {
+    text-align: center;
+  }
+}
