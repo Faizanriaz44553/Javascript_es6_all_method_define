@@ -166,7 +166,7 @@ body {
   position: relative;
   border: 1px solid var(--border-card);
   border-radius: var(--radius-card);
-  padding: 14px 16px 14px 22px;
+padding: 14px 16px 14px 22px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -276,13 +276,8 @@ body {
   align-items: center;
   justify-content: space-around;
   padding: 10px 0;
-}
-
-.chart-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
+  flex-wrap: wrap; /* Circles ko dabne se bachayega */
+  gap: 12px;
 }
 
 .donut-chart {
@@ -292,7 +287,17 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0; /* Circle kabhi stretch ya oval na bane */
 }
+
+.chart-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+
 
 .chart-green { background: conic-gradient(var(--color-green) 0% 84%, #edf0f5 84% 100%); }
 .chart-blue { background: conic-gradient(var(--color-blue) 0% 46%, #edf0f5 46% 100%); }
@@ -465,7 +470,7 @@ body {
     width: 34px;
     height: 34px;
     padding: 0;
-    border-radius: 50%; /* Mobile par clean round icon button */
+    border-radius: 50%; 
     font-size: 0.95rem;
     display: flex;
     justify-content: center;

@@ -1,7 +1,7 @@
 import { requireAuth } from "../authState.js";
 import { fetchTasksOnce } from "../data.js";
 import { alertDisplay } from "../errorAlert.js";
-import { addDoc, auth, collection, db, serverTimestamp } from "../firebase.js";
+import { addDoc, auth, collection, db, deleteDoc, doc, serverTimestamp } from "../firebase.js";
 import { formatTaskDate, getTimeAgo } from "../utils.js";
 
 const dateElement = document.getElementById("nav-date");
@@ -14,6 +14,7 @@ const createTaskBtn = document.getElementById("createTaskBtn");
 const articleContent = document.getElementById("dashboard-article-list");
 const taskStatusDiv = document.getElementById("taskStatusDic");
 const completedTask = document.getElementById("completedTask");
+const btnWhatsappInvite = document.getElementById("btnWhatsappInvite");
 
 let data = [];
 
@@ -68,9 +69,14 @@ function renderTasksToUI() {
           <div class="card-body-custom">
             <div class="card-header-row">
               <h3 class="task-title">${title || "Untitled"}</h3>
-              <button class="more-options">
+                            <div class="dropdown">
+              <button class="more-options" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="bi bi-three-dots"></i>
               </button>
+                <ul class="dropdown-menu">
+    <li class="dropdown-item " onclick="deleteTask('${item?.id}')">Delete</li>
+  </ul>
+              </div>
             </div>
             <p class="task-description">
               ${desc || "No description provided."}
@@ -97,7 +103,7 @@ function renderTasksToUI() {
           </div>
         </article>`;
     })
-    .join(""); // <-- Array ko HTML string mein join karein
+    .join("");
 }
 
 requireAuth("./login.html", async (user) => {
@@ -114,6 +120,7 @@ requireAuth("./login.html", async (user) => {
 });
 
 async function addTask(e) {
+  createTaskBtn.disabled = true
   if (e) e.preventDefault();
   try {
     const title = taskTitle?.value.trim();
@@ -156,6 +163,7 @@ async function addTask(e) {
       const modalInstance = bootstrap.Modal.getInstance(modalElement);
       modalInstance?.hide();
     }
+      createTaskBtn.disabled = false
   } catch (error) {
     console.error(error.message);
     alertDisplay("error", error.message);
@@ -290,3 +298,35 @@ async function filterStatus() {
                 </article>`);
   });
 }
+
+
+window.deleteTask = async function(taskId) {
+
+  try {
+    await deleteDoc(doc(db, "tasks", taskId));
+    console.log("Task successfully deleted from Firebase!");
+    data = data.filter(item => item.id !== taskId);
+    alertDisplay("success", "Task deleted successfully!");
+    renderTasksToUI();
+    filterStatus()
+    
+  } catch (error) {
+    console.log("Error status:", error.message);
+  }
+};
+
+function userInvite() {
+  const shareUrl = window.location.href; 
+const message = 
+`Hi there,
+
+We’ve put together a central dashboard to keep track of our project milestones, daily tasks, and live progress in one place. 
+
+Have a look when you get a moment and join the workspace here:
+${shareUrl}
+
+Cheers,`;
+  const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+  window.open(whatsappUrl, "_blank");
+}
+btnWhatsappInvite.addEventListener("click" , userInvite)

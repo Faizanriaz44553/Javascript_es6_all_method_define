@@ -65,8 +65,13 @@ body {
   letter-spacing: -0.5px;
 }
 
-.logo-red { color: var(--sidebar-coral); }
-.logo-black { color: var(--text-main); }
+.logo-red {
+  color: var(--sidebar-coral);
+}
+
+.logo-black {
+  color: var(--text-main);
+}
 
 .search-box {
   position: relative;
@@ -167,10 +172,12 @@ body {
   text-align: center;
   margin-bottom: 26px;
 }
+
 /* Letter Avatar Styling */
 .avatar-container.avatar-initials {
   background-color: #ffffff;
-  color: var(--sidebar-coral); /* Coral Red text (#ff5e5e) */
+  color: var(--sidebar-coral);
+  /* Coral Red text (#ff5e5e) */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -181,6 +188,7 @@ body {
   border: 3.5px solid rgba(255, 255, 255, 0.85);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
+
 .avatar-container {
   width: 76px;
   height: 76px;
@@ -275,12 +283,13 @@ body {
   transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
-@media (max-width : 576px){
-    .btn-add-task-main {
+@media (max-width : 576px) {
+  .btn-add-task-main {
     width: 34px;
     height: 34px;
     padding: 0;
-    border-radius: 50%; /* Mobile par clean round icon button */
+    border-radius: 50%;
+    /* Mobile par clean round icon button */
     font-size: 0.95rem;
     display: flex;
     justify-content: center;
@@ -393,10 +402,24 @@ body {
   background-color: var(--sidebar-coral-hover);
   color: #ffffff;
 }
-.dot { width: 6px; height: 6px; border-radius: 50%; }
-.dot-green { background-color: var(--color-green); }
-.dot-blue { background-color: var(--color-blue); }
-.dot-red { background-color: var(--color-red); }
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.dot-green {
+  background-color: var(--color-green);
+}
+
+.dot-blue {
+  background-color: var(--color-blue);
+}
+
+.dot-red {
+  background-color: var(--color-red);
+}
 
 /* Layout Breakpoints */
 @media (max-width: 1100px) {
@@ -428,24 +451,31 @@ body {
     height: 120px;
     margin-top: 8px;
   }
-.btn-add-task-main {
+
+  .btn-add-task-main {
     width: 34px;
     height: 34px;
     padding: 0;
-    border-radius: 50%; /* Mobile par clean round icon button */
+    border-radius: 50%;
+    /* Mobile par clean round icon button */
     font-size: 0.95rem;
     display: flex;
     justify-content: center;
     align-items: center;
   }
+  .welcom-back-heading{
+    font-size: 0.5rem;
+  }
 }
-.hello-icon-img{
+
+.hello-icon-img {
   display: inline;
   align-items: center;
   width: 60px;
   height: 60px;
 }
-.welcom-back-heading{
+
+.welcom-back-heading {
   font-family: "Style Script", cursive;
   font-weight: 600;
   font-size: 2rem;
