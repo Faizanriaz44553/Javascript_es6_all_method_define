@@ -5,7 +5,7 @@ const navbarProfile = document.getElementById("navbar-profile");
 requireAuth("/login.html", async(user) => {
     let userData = await getUserProfile(user?.uid);
     fetchUserData(userData)
-    wellcomeBack.innerHTML = `Welcome back, ${userData?.firstName}👋`
+    wellcomeBack.innerHTML = `<h1 class="welcom-back-heading">Welcome back, ${userData?.firstName} <img class="hello-icon-img" src="../assets/hello.gif" /></h1>`
 })
 
 function fetchUserData (user) {

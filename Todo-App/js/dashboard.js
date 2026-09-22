@@ -2,7 +2,7 @@ import { requireAuth } from "../authState.js";
 import { fetchTasksOnce } from "../data.js";
 import { alertDisplay } from "../errorAlert.js";
 import { addDoc, auth, collection, db, serverTimestamp } from "../firebase.js";
-import { formatTaskDate } from "../utils.js";
+import { formatTaskDate, getTimeAgo } from "../utils.js";
 
 const dateElement = document.getElementById("nav-date");
 const taskTitle = document.getElementById("taskTitle");
@@ -12,6 +12,8 @@ const taskStatus = document.getElementById("taskStatus");
 const taskImage = document.getElementById("taskImage");
 const createTaskBtn = document.getElementById("createTaskBtn");
 const articleContent = document.getElementById("dashboard-article-list");
+const taskStatusDiv = document.getElementById("taskStatusDic");
+const completedTask = document.getElementById("completedTask");
 
 let data = [];
 
@@ -26,7 +28,6 @@ if (articleContent) {
       </div>
     </div>`;
 }
-
 
 if (dateElement) {
   const now = new Date();
@@ -43,7 +44,6 @@ if (dateElement) {
 
 function renderTasksToUI() {
   if (!articleContent) return;
-
 
   if (!data || data.length === 0) {
     articleContent.innerHTML = `
@@ -105,6 +105,8 @@ requireAuth("./login.html", async (user) => {
     const tasks = await fetchTasksOnce(user?.uid, "tasks");
     data = tasks || [];
     renderTasksToUI();
+    console.log(data);
+    filterStatus();
   } catch (err) {
     console.error("Tasks fetch error:", err);
     articleContent.innerHTML = `<p class="text-danger text-center">Failed to load tasks.</p>`;
@@ -144,6 +146,7 @@ async function addTask(e) {
 
     data.unshift({ id: docRef.id, ...newTaskData });
     renderTasksToUI();
+    filterStatus()
     taskTitle.value = "";
     taskDesc.value = "";
     if (taskImage) taskImage.value = "";
@@ -160,3 +163,130 @@ async function addTask(e) {
 }
 
 createTaskBtn?.addEventListener("click", addTask);
+
+async function filterStatus() {
+  taskStatusDiv.innerHTML = ""
+  completedTask.innerHTML = ""
+  if (!data || data?.length === 0) return;
+
+  const total = data?.length;
+  const counts = data.reduce(
+    (acc, item) => {
+      if (item?.status === "In Progress") acc.inProgress++;
+      else if (item?.status === "Not Started") acc.notStarted++;
+      else if (item?.status === "Completed") acc.completed++;
+      return acc;
+    },
+    { inProgress: 0, notStarted: 0, completed: 0 },
+  );
+  const filterCompletedData = data?.filter((item) => {
+    return item.status === "Completed";
+  });
+  console.log(filterCompletedData);
+
+  const inProgressPct = Math.round((counts.inProgress / total) * 100);
+  const notStartedPct = Math.round((counts.notStarted / total) * 100);
+  const completedPct = Math.round((counts.completed / total) * 100);
+
+  console.log({ inProgressPct, notStartedPct, completedPct });
+  const c = 251.2;
+
+  taskStatusDiv.innerHTML = `
+  <!-- Completed -->
+  <div class="text-center d-inline-block m-2">
+    <div class="position-relative d-inline-flex align-items-center justify-content-center">
+      <svg width="100" height="100" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="40" fill="none" class="stroke-light" stroke-width="8" stroke="#e9ecef" />
+        <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="8"
+                class="text-success circle-bar"
+                stroke-dasharray="${c}"
+                stroke-dashoffset="${c - (completedPct / 100) * c}"
+                stroke-linecap="round"
+                transform="rotate(-90 50 50)" />
+      </svg>
+      <span class="position-absolute fs-6 fw-bold text-dark">${completedPct}%</span>
+    </div>
+    <p class="mt-2 mb-0 small fw-semibold text-muted">
+      <span class="d-inline-block rounded-circle bg-success me-1" style="width: 8px; height: 8px;"></span> Completed
+    </p>
+  </div>
+
+  <!-- In Progress -->
+  <div class="text-center d-inline-block m-2">
+    <div class="position-relative d-inline-flex align-items-center justify-content-center">
+      <svg width="100" height="100" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="40" fill="none" stroke-width="8" stroke="#e9ecef" />
+        <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="8"
+                class="text-primary circle-bar"
+                stroke-dasharray="${c}"
+                stroke-dashoffset="${c - (inProgressPct / 100) * c}"
+                stroke-linecap="round"
+                transform="rotate(-90 50 50)" />
+      </svg>
+      <span class="position-absolute fs-6 fw-bold text-dark">${inProgressPct}%</span>
+    </div>
+    <p class="mt-2 mb-0 small fw-semibold text-muted">
+      <span class="d-inline-block rounded-circle bg-primary me-1" style="width: 8px; height: 8px;"></span> In Progress
+    </p>
+  </div>
+
+  <!-- Not Started -->
+  <div class="text-center d-inline-block m-2">
+    <div class="position-relative d-inline-flex align-items-center justify-content-center">
+      <svg width="100" height="100" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="40" fill="none" stroke-width="8" stroke="#e9ecef" />
+        <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="8"
+                class="text-danger circle-bar"
+                stroke-dasharray="${c}"
+                stroke-dashoffset="${c - (notStartedPct / 100) * c}"
+                stroke-linecap="round"
+                transform="rotate(-90 50 50)" />
+      </svg>
+      <span class="position-absolute fs-6 fw-bold text-dark">${notStartedPct}%</span>
+    </div>
+    <p class="mt-2 mb-0 small fw-semibold text-muted">
+      <span class="d-inline-block rounded-circle bg-danger me-1" style="width: 8px; height: 8px;"></span> Not Started
+    </p>
+  </div>
+`;
+
+  filterCompletedData.map((item) => {
+    const { title, desc, image, status, createdAt } = item;
+    const formatDate = getTimeAgo(createdAt)
+    console.log(formatDate);
+    
+    return (completedTask.innerHTML += `<article class="task-card">
+                  <div class="card-status-indicator indicator-green"></div>
+                  <div class="card-body-custom">
+                    <div class="card-header-row">
+                      <h3 class="task-title">${title}</h3>
+                      <button class="more-options">
+                        <i class="bi bi-three-dots"></i>
+                      </button>
+                    </div>
+                    <p class="task-description">
+                      ${desc}
+                    </p>
+                    <div class="task-metadata">
+                      <span class="meta-item"
+                        >Status:
+                        <strong class="status-completed"
+                          >${status}</strong
+                        ></span
+                      >
+                      <span class="meta-item created-date"
+                        >Completed ${formatDate}</span
+                      >
+                    </div>
+                  </div>
+                  <div class="task-thumbnail-wrapper">
+            <img
+              src="${image || defaultImagedata}"
+              onerror="this.onerror=null; this.src='${defaultImagedata}';"
+              alt="Task thumbnail"
+              class="task-thumbnail"
+            />
+                  </div>
+                </article>`);
+  });
+}

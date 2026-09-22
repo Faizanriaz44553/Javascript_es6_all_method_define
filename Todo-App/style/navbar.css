@@ -439,3 +439,15 @@ body {
     align-items: center;
   }
 }
+.hello-icon-img{
+  display: inline;
+  align-items: center;
+  width: 60px;
+  height: 60px;
+}
+.welcom-back-heading{
+  font-family: "Style Script", cursive;
+  font-weight: 600;
+  font-size: 2rem;
+  margin-top: 10px;
+}
