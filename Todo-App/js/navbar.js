@@ -1,8 +1,10 @@
 import { requireAuth } from "../authState.js"
 import { getUserProfile } from "../data.js";
+import { auth, signOut } from "../firebase.js";
 const wellcomeBack = document.getElementById("wellcome-back")
 const navbarProfile = document.getElementById("navbar-profile");
-requireAuth("/login.html", async(user) => {
+const logoutBtn = document.getElementById("logout-button");
+requireAuth("../pages/login.html", async(user) => {
     let userData = await getUserProfile(user?.uid);
     fetchUserData(userData)
     wellcomeBack.innerHTML = `<h1 class="welcom-back-heading">Welcome back, ${userData?.firstName} <img class="hello-icon-img" src="../assets/hello.gif" /></h1>`
@@ -20,3 +22,15 @@ function fetchUserData (user) {
     <p class="user-email">${email || ""}</p>
   `;
 };
+
+async function LogoutFeature() {
+  
+try {
+  let signout = await signOut(auth)
+  window.location.replace("../pages/login.html");
+  console.log(signout);
+} catch (error) {
+  console.log(error.message);
+}
+}
+logoutBtn.addEventListener("click", LogoutFeature)

@@ -148,10 +148,22 @@
           </nav>
 
           <div class="sidebar-footer">
-            <button class="logout-btn" id="logout-button">
-              <i class="bi bi-box-arrow-right"></i>
-              Logout
-            </button>
+            <div class="dropdown">
+              <button
+                class="logout-btn"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="bi bi-box-arrow-right"></i>
+                Logout
+              </button>
+              <ul class="dropdown-menu">
+                <li class="dropdown-item" id="logout-button">
+                  Corfirm Logout
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </aside>
@@ -344,8 +356,7 @@
               20 June <span class="bullet">•</span> Today
             </p>
 
-            <div class="task-list" id="dashboard-article-list">
-            </div>
+            <div class="task-list" id="dashboard-article-list"></div>
           </div>
 
           <!-- Right Column: Status & Completed Tasks -->
@@ -356,9 +367,7 @@
                 <span class="panel-title">Task Status</span>
               </div>
 
-              <div class="charts-row" id="taskStatusDic">
-
-              </div>
+              <div class="charts-row" id="taskStatusDic"></div>
             </section>
 
             <section class="widget-panel">
@@ -367,9 +376,7 @@
                 <span class="panel-title">Completed Task</span>
               </div>
 
-              <div class="completed-task-list" id="completedTask">
-
-              </div>
+              <div class="completed-task-list" id="completedTask"></div>
             </section>
           </div>
         </div>

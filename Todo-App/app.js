@@ -1,4 +1,3 @@
-import { redirectIfLoggedIn } from "./authState.js";
 import {
   auth,
   createUserWithEmailAndPassword,
@@ -6,6 +5,7 @@ import {
   doc,
   setDoc,
   serverTimestamp,
+  onAuthStateChanged,
 } from "./firebase.js";
 
 const submitBtn = document.querySelector("#submit");
@@ -14,6 +14,8 @@ const lastNameInput = document.querySelector("#l-name");
 const userNameInput = document.querySelector("#u-name");
 const emailInput = document.querySelector("#email");
 const passwordInput = document.querySelector("#password");
+
+let isSigningUp = false;
 
 async function handleSubmit(e) {
   e.preventDefault();
@@ -25,21 +27,22 @@ async function handleSubmit(e) {
   const password = passwordInput.value;
 
   if (!email || !password || !firstName) {
-   return Swal.fire({
+    return Swal.fire({
       icon: "error",
       title: "Please fill in all required fields.",
     });
   }
 
-    try {
+  isSigningUp = true;
+
+  try {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
-      password,
+      password
     );
 
     const user = userCredential.user;
-    console.log("Registered User:", user);
 
     await setDoc(doc(db, "users", user.uid), {
       uid: user.uid,
@@ -50,13 +53,15 @@ async function handleSubmit(e) {
       createdAt: serverTimestamp(),
     });
 
-    Swal.fire({
-      title: "Registration successful!",
-      icon: "success",
-    });
-    window.location.href = "./pages/login.html";
+    window.location.replace("./pages/dashboard.html");
+
   } catch (error) {
-    console.error("Firebase Error:", error.code, error.message);
+    isSigningUp = false;
+
+    console.error("FIREBASE ERROR:", error);
+    console.error("CODE:", error.code);
+    console.error("MESSAGE:", error.message);
+
     Swal.fire({
       icon: "error",
       title: error.message,
@@ -66,7 +71,11 @@ async function handleSubmit(e) {
 
 submitBtn.addEventListener("click", handleSubmit);
 
-redirectIfLoggedIn("./pages/dashboard.html");
+onAuthStateChanged(auth, (user) => {
+  if (user && !isSigningUp) {
+    window.location.replace("./pages/dashboard.html");
+  }
+});
 // let data = []
 
 // function addContent() {

@@ -64,49 +64,62 @@ function renderTasksToUI() {
       if (status === "Completed") indicatorClass = "indicator-green";
 
       return `
-        <article class="task-card">
-          <div class="card-status-indicator ${indicatorClass}"></div>
-          <div class="card-body-custom">
-            <div class="card-header-row">
-              <h3 class="task-title">${title || "Untitled"}</h3>
-                            <div class="dropdown">
-              <button class="more-options" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-three-dots"></i>
-              </button>
-                <ul class="dropdown-menu">
-    <li class="dropdown-item " onclick="deleteTask('${item?.id}')">Delete</li>
-  </ul>
-              </div>
-            </div>
-            <p class="task-description">
-              ${desc || "No description provided."}
-            </p>
-            <div class="task-metadata">
-              <span class="meta-item">
-                Priority: <strong class="priority-moderate">${priority || "Moderate"}</strong>
-              </span>
-              <span class="meta-item">
-                Status: <strong class="status-not-started">${status || "Not Started"}</strong>
-              </span>
-              <span class="meta-item created-date">
-                Created on: ${formatTaskDate(createdAt)}
-              </span>
-            </div>
+          <article class="task-card">
+      <div class="card-status-indicator ${indicatorClass}"></div>
+      <div class="card-body-custom">
+        <div class="card-header-row">
+          <h3 class="task-title">${title || "Untitled"}</h3>
+          <div class="dropdown">
+            <button
+              class="more-options"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="bi bi-three-dots"></i>
+            </button>
+            <ul class="dropdown-menu">
+              <li class="dropdown-item" onclick="deleteTask('${item?.id}')">
+                Delete
+              </li>
+            </ul>
           </div>
-          <div class="task-thumbnail-wrapper">
-            <img
-              src="${image || defaultImagedata}"
-              onerror="this.onerror=null; this.src='${defaultImagedata}';"
-              alt="Task thumbnail"
-              class="task-thumbnail"
-            />
-          </div>
-        </article>`;
+        </div>
+        <p class="task-description">${desc || "No description provided."}</p>
+        <div class="task-metadata">
+          <span class="meta-item">
+            Priority:
+            <strong class="priority-moderate">${priority || "Moderate"}</strong>
+          </span>
+          <span class="meta-item">
+            Status:
+            <strong class="status-not-started"
+              >${status || "Not Started"}</strong
+            >
+          </span>
+          <span class="meta-item created-date">
+            Created on: ${formatTaskDate(createdAt)}
+          </span>
+        </div>
+      </div>
+      <div class="task-thumbnail-wrapper">
+        <img
+          src="${image || defaultImagedata}"
+          onerror="
+            this.onerror = null;
+            this.src = '${defaultImagedata}';
+          "
+          alt="Task thumbnail"
+          class="task-thumbnail"
+        />
+      </div>
+    </article>
+      `;
     })
     .join("");
 }
 
-requireAuth("./login.html", async (user) => {
+requireAuth("../pages/login.html", async (user) => {
   try {
     const tasks = await fetchTasksOnce(user?.uid, "tasks");
     data = tasks || [];
