@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>quize app</title>
+  </head>
+  <body>
+    <form id="form">
+        
+        <label for="verifyQuestions">In which category do you want to play the quiz?</label>
+        <select name="verifyQuestions" id="verifyQuestions">
+             <option value="html">html Questions</option>
+             <option value="css">css Questions</option>
+             <option value="javascript">javascript Questions</option>
+        </select>
+        <br> <br>
+        <label for="times">Please select the countdown time for your quiz.</label>
+        <select name="times" id="times">
+             <option value="1">1 min</option>
+             <option value="3">3 min</option>
+             <option value="5">5 min</option>
+             <option value="8">8 min</option>
+             <option value="10">10 min</option>
+        </select>
+        <br>
+<div id="selectquizequs">
+
+</div>
+      <input type="submit" />
+    </form>
+            <div id="domTimer">
+            
+        </div>
+
+    <script type="module" src="./app.js"></script>
+    <script type="module" src="./utils.js"></script>
+  </body>
+</html>
